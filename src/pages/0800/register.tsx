@@ -257,12 +257,12 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
   }
 
   return (
-    <main className="min-h-svh bg-[#f7f8fc] text-slate-900">
+    <main className="min-h-svh bg-background text-slate-900">
       <SectionHeader onLogout={onLogout} />
-      <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-10">
+      <div className="mx-auto max-w-5xl px-5 py-8">
         <Link
           to="/0800/registros"
-          className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-[#172d55]"
+          className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800"
         >
           <ArrowLeftIcon size={16} aria-hidden="true" />
           Volver a registros
@@ -285,7 +285,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
         )}
 
         <div className="mb-7 flex items-start gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-[#315d91]">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-[#315d91]">
             <ClipboardTextIcon size={25} weight="duotone" />
           </span>
           <div>
@@ -296,7 +296,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
             </p>
           </div>
         </div>
-        <p className="mb-5 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-blue-900">
+        <p className="mb-5 rounded-xl border border-blue-100 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/10 px-4 py-3 text-sm text-blue-900 dark:text-blue-50">
           Versión de prueba: la información se guarda localmente en este navegador y no se envía a una API.
         </p>
 
@@ -311,9 +311,6 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   defaultValue={callDateTime}
                   className="h-10 border-slate-200 bg-white"
                 />
-              </Field>
-              <Field label="Operadora que registra">
-                <Input name="operator" maxLength={60} placeholder="Nombre de la operadora" className="h-10 border-slate-200 bg-white" />
               </Field>
             </div>
             <fieldset className="mt-6">
@@ -439,7 +436,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   <div className="flex gap-5">
                     {[true, false].map((value) => (
                       <label key={String(value)} className="flex items-center gap-2 text-sm text-slate-600">
-                          <input type="radio" name="identifiedViolence" value={value ? "Sí" : "No"} checked={identifiedViolence === value} onChange={() => setIdentifiedViolence(value)} className="size-4 accent-[#315d91]" />
+                        <input type="radio" name="identifiedViolence" value={value ? "Sí" : "No"} checked={identifiedViolence === value} onChange={() => setIdentifiedViolence(value)} className="size-4 accent-[#315d91]" />
                         {value ? "Sí" : "No"}
                       </label>
                     ))}

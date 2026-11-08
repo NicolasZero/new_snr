@@ -4,6 +4,8 @@ import { DashboardPage } from "@/pages/dashboard"
 import { LoginPage } from "@/pages/login"
 import { CallRecordsPage } from "@/pages/0800/records"
 import { RegisterCallPage } from "@/pages/0800/register"
+import { DefenderRecordsPage } from "@/pages/defenders/records"
+import { DefenderRegisterPage } from "@/pages/defenders/register"
 import {
   clearAuthenticatedSession,
   hasAuthenticatedSession,
@@ -54,6 +56,26 @@ function AppRoutes() {
         element={
           isAuthenticated ? (
             <CallRecordsPage onLogout={handleLogout} />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/defensoras/registros"
+        element={
+          isAuthenticated ? (
+            <DefenderRecordsPage onLogout={handleLogout} />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/defensoras/registros/:recordId"
+        element={
+          isAuthenticated ? (
+            <DefenderRegisterPage onLogout={handleLogout} />
           ) : (
             <Navigate to="/login" replace />
           )

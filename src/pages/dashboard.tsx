@@ -1,12 +1,11 @@
 import {
   ArrowUpRightIcon,
   ClipboardTextIcon,
+  GavelIcon,
   HeadsetIcon,
-  SignOutIcon,
-  UsersThreeIcon,
 } from "@phosphor-icons/react"
-import { Button } from "@/components/ui/button"
 import { Link } from "react-router"
+import { AppHeader } from "@/components/layout/app-header"
 
 interface DashboardPageProps {
   onLogout: () => void
@@ -25,39 +24,17 @@ const sections = [
     href: "/0800/registros",
   },
   {
-    title: "Personas usuarias",
-    description: "Gestiona la información de las personas registradas.",
-    icon: UsersThreeIcon,
+    title: "Defensoras",
+    description: "Consulta y atiende los casos derivados desde el 0800.",
+    icon: GavelIcon,
+    href: "/defensoras/registros",
   },
 ]
 
 export function DashboardPage({ onLogout }: DashboardPageProps) {
   return (
-    <main className="min-h-svh bg-[#f7f8fc] text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-          <div className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-[#172d55] text-white">
-              <ClipboardTextIcon size={22} weight="duotone" />
-            </span>
-            <div>
-              <p className="text-sm font-semibold tracking-wide text-[#172d55]">
-                SISTEMA NACIONAL DE REGISTRO
-              </p>
-              <p className="text-xs text-slate-500">Panel institucional</p>
-            </div>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onLogout}
-            className="h-10 gap-2 rounded-xl border-slate-200 bg-white px-3 text-slate-600 hover:text-[#172d55]"
-          >
-            <SignOutIcon size={18} aria-hidden="true" />
-            <span className="hidden sm:inline">Cerrar sesión</span>
-          </Button>
-        </div>
-      </header>
+    <main className="min-h-svh bg-background">
+      <AppHeader onLogout={onLogout} showLogoutText />
 
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
         <section className="relative overflow-hidden rounded-3xl bg-[#172d55] px-6 py-9 text-white sm:px-10 sm:py-12">
@@ -79,13 +56,14 @@ export function DashboardPage({ onLogout }: DashboardPageProps) {
 
         <section className="mt-10">
           <div className="mb-5">
-            <h2 className="text-xl font-semibold text-slate-900">
+            <h2 className="text-xl font-semibold ">
               Módulos del sistema
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               Selecciona una sección para comenzar.
             </p>
           </div>
+
           <div className="grid gap-4 md:grid-cols-3">
             {sections.map(({ title, description, icon: Icon, href }) => (
               <Link

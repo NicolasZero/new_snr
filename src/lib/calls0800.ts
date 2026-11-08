@@ -4,6 +4,15 @@ export type CallType =
   | "Intervención"
   | "No relevantes"
 
+export type DefenderFollowUpService = "Psiquiatría" | "Ayuda ciudadana"
+
+export interface DefenderAttention {
+  summary: string
+  needsFollowUp: boolean
+  followUpService: DefenderFollowUpService | ""
+  attendedAt: string
+}
+
 export interface CallRecord {
   id: string
   createdAt: string
@@ -19,10 +28,24 @@ export interface CallRecord {
   aggressorName: string
   notes: string
   data: Record<string, string | string[]>
+  defenderAttention?: DefenderAttention
 }
 
 const STORAGE_KEY = "snr-0800-calls"
 const callTypes: CallType[] = ["Orientación", "Información", "Intervención", "No relevantes"]
+
+function isDefenderAttention(value: unknown): value is DefenderAttention {
+  if (!value || typeof value !== "object") return false
+  const attention = value as Record<string, unknown>
+  return (
+    typeof attention.summary === "string" &&
+    typeof attention.needsFollowUp === "boolean" &&
+    (attention.followUpService === "" ||
+      attention.followUpService === "Psiquiatría" ||
+      attention.followUpService === "Ayuda ciudadana") &&
+    typeof attention.attendedAt === "string"
+  )
+}
 
 function isCallRecord(value: unknown): value is CallRecord {
   if (!value || typeof value !== "object") return false
@@ -45,7 +68,9 @@ function isCallRecord(value: unknown): value is CallRecord {
     typeof record.notes === "string" &&
     !!record.data &&
     typeof record.data === "object" &&
-    !Array.isArray(record.data)
+    !Array.isArray(record.data) &&
+    (record.defenderAttention === undefined ||
+      isDefenderAttention(record.defenderAttention))
   )
 }
 
@@ -140,4 +165,29 @@ export function getCallRecords(): CallRecord[] {
 export function saveCallRecord(record: CallRecord): void {
   const records = getCallRecords()
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify([record, ...records]))
+}
+
+export function saveDefenderAttention(
+  recordId: string,
+  attention: DefenderAttention,
+): void {
+  const records = getCallRecords()
+  const recordIndex = records.findIndex((record) => record.id === recordId)
+
+  if (recordIndex === -1) {
+    throw new Error(`No se encontró el registro 0800 ${recordId}.`)
+  }
+  if (records[recordIndex].defenderAttention) {
+    throw new Error(`El registro 0800 ${recordId} ya fue atendido por Defensoría.`)
+  }
+  if (records[recordIndex].redirectTo !== "Defensoría") {
+    throw new Error(`El registro 0800 ${recordId} no fue derivado a Defensoría.`)
+  }
+
+  const updatedRecords = [...records]
+  updatedRecords[recordIndex] = {
+    ...updatedRecords[recordIndex],
+    defenderAttention: attention,
+  }
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedRecords))
 }

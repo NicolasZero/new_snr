@@ -23,12 +23,12 @@ function formatDate(value: string) {
   return Number.isNaN(date.getTime())
     ? value
     : new Intl.DateTimeFormat("es-VE", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date)
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date)
 }
 
 function recordSearchText(record: CallRecord) {
@@ -162,7 +162,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[850px] text-left text-sm">
+            <table className="w-full min-w-212.5 text-left text-sm">
               <thead className="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
                 <tr>
                   <th className="px-5 py-3">Código / Fecha</th>
