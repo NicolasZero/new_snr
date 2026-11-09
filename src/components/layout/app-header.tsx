@@ -65,13 +65,13 @@ export function AppHeader({
   const hasNavContent = Boolean((navItems && navItems.length > 0) || children)
 
   return (
-    <header className={`border-b border-border bg-card text-card-foreground ${className}`}>
+    <header className={`border-b border-border bg-card ${className}`}>
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           to={homeHref}
           className="flex items-center gap-3 transition-opacity hover:opacity-90"
         >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#172d55] text-white">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
             <Icon size={22} weight="duotone" />
           </span>
           <div>
@@ -91,7 +91,7 @@ export function AppHeader({
                   to={item.href}
                   className={({ isActive }) =>
                     `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
-                      ? "bg-primary/10 text-slate-900 dark:text-primary-foreground dark:bg-primary/30"
+                      ? "bg-background text-primary dark:text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`
                   }

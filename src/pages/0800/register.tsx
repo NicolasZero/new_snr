@@ -15,6 +15,8 @@ import {
   type CallType,
 } from "@/lib/calls0800"
 import { SectionHeader } from "@/pages/0800/section-header"
+import { CheckOptions } from "@/components/checkOptions"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface RegisterCallPageProps {
   onLogout: () => void
@@ -106,14 +108,14 @@ function Field({
   className?: string
 }) {
   return (
-    <label className={`grid gap-1.5 text-sm font-medium text-slate-700 ${className}`}>
+    <label className={`grid gap-1.5 text-sm font-medium ${className}`}>
       {label}
       {children}
     </label>
   )
 }
 
-function Select({
+function SelectForm({
   name,
   options,
 }: {
@@ -121,39 +123,17 @@ function Select({
   options: string[]
 }) {
   return (
-    <select
-      name={name}
-      className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal text-slate-700 outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
-    >
-      <option value="">Seleccionar</option>
-      {options.map((option) => <option key={option}>{option}</option>)}
-    </select>
+    <Select name={name}>
+      <SelectTrigger className="w-full h-10!">
+        <SelectValue placeholder="Seleccionar" />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}
+      </SelectContent>
+    </Select>
   )
 }
 
-function CheckOptions({
-  name,
-  options,
-  columns = "sm:grid-cols-2 lg:grid-cols-3",
-}: {
-  name: string
-  options: string[]
-  columns?: string
-}) {
-  return (
-    <div className={`grid gap-2 ${columns}`}>
-      {options.map((option) => (
-        <label
-          key={option}
-          className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/70 px-3 py-2.5 text-sm text-slate-600"
-        >
-          <input type="checkbox" name={name} value={option} className="mt-0.5 size-4 accent-[#315d91]" />
-          {option}
-        </label>
-      ))}
-    </div>
-  )
-}
 
 function FormSection({
   title,
@@ -165,10 +145,10 @@ function FormSection({
   children: ReactNode
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
-      <div className="mb-5 border-b border-slate-100 pb-4">
-        <h2 className="font-semibold text-slate-900">{title}</h2>
-        {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
+    <section className="rounded-2xl border bg-card p-5 shadow-sm sm:p-7">
+      <div className="mb-5 border-b border-muted pb-4">
+        <h2 className="font-semibold ">{title}</h2>
+        {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
       </div>
       {children}
     </section>
@@ -257,18 +237,18 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
   }
 
   return (
-    <main className="min-h-svh bg-background text-slate-900">
+    <main className="min-h-svh bg-background ">
       <SectionHeader onLogout={onLogout} />
       <div className="mx-auto max-w-5xl px-5 py-8">
         <Link
           to="/0800/registros"
-          className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800"
+          className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary"
         >
           <ArrowLeftIcon size={16} aria-hidden="true" />
           Volver a registros
         </Link>
         {savedId && (
-          <div role="status" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          <div role="status" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/10 px-4 py-3 text-sm text-emerald-800">
             <span className="flex items-center gap-2">
               <CheckCircleIcon size={20} weight="fill" />
               Llamada guardada correctamente. Código: <strong>{savedId}</strong>
@@ -285,18 +265,18 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
         )}
 
         <div className="mb-7 flex items-start gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-[#315d91]">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-sidebar-primary/10 text-sidebar-primary">
             <ClipboardTextIcon size={25} weight="duotone" />
           </span>
           <div>
-            <p className="text-sm font-medium text-[#315d91]">Módulo de atención 0800</p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">Registrar llamada</h1>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="text-sm font-medium text-sidebar-primary">Módulo de atención 0800</p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight  sm:text-3xl">Registrar llamada</h1>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
               Completa la información de la atención recibida. Los campos con * son obligatorios.
             </p>
           </div>
         </div>
-        <p className="mb-5 rounded-xl border border-blue-100 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/10 px-4 py-3 text-sm text-blue-900 dark:text-blue-50">
+        <p className="mb-5 rounded-xl border bg-blue-50 dark:border-blue-800 dark:bg-blue-900/10 px-4 py-3 text-sm text-blue-900 dark:text-blue-50">
           Versión de prueba: la información se guarda localmente en este navegador y no se envía a una API.
         </p>
 
@@ -309,23 +289,23 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   name="callDateTime"
                   required
                   defaultValue={callDateTime}
-                  className="h-10 border-slate-200 bg-white"
+                  className="h-10 bg-card"
                 />
               </Field>
             </div>
             <fieldset className="mt-6">
-              <legend className="mb-2 text-sm font-medium text-slate-700">Tipo de llamada *</legend>
+              <legend className="mb-2 text-sm font-medium">Tipo de llamada *</legend>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                 {callTypes.map((type) => (
-                  <label key={type} className={`flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm font-medium transition ${callType === type ? "border-blue-300 bg-blue-50 text-[#172d55]" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"}`}>
-                    <input type="radio" name="callType" value={type} required checked={callType === type} onChange={() => setCallType(type)} className="size-4 accent-[#315d91]" />
+                  <label key={type} className={`flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm font-medium transition ${callType === type ? "border-primary bg-primary/5" : "bg-card text-muted-foreground hover:border-sidebar-primary"}`}>
+                    <input type="radio" name="callType" value={type} required checked={callType === type} onChange={() => setCallType(type)} className="size-4 accent-sidebar-primary" />
                     {type}
                   </label>
                 ))}
               </div>
             </fieldset>
             <fieldset className="mt-6">
-              <legend className="mb-2 text-sm font-medium text-slate-700">Subtipo(s) de llamada</legend>
+              <legend className="mb-2 text-sm font-medium">Subtipo(s) de llamada</legend>
               <CheckOptions name="subtypes" options={subtypeOptions[callType]} />
             </fieldset>
           </FormSection>
@@ -334,33 +314,33 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
             <>
               <FormSection title="Datos de la agraviada" description="Registra solo la información que la persona pueda proporcionar.">
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  <Field label="Tipo de documento"><Select name="documentType" options={["Cédula", "RIF", "Pasaporte"]} /></Field>
-                  <Field label="Número de documento"><Input name="documentNumber" maxLength={20} className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Nombres"><Input name="firstName" maxLength={30} className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Apellidos"><Input name="lastName" maxLength={30} className="h-10 border-slate-200 bg-white" /></Field>
+                  <Field label="Tipo de documento"><SelectForm name="documentType" options={["Cédula", "RIF", "Pasaporte"]} /></Field>
+                  <Field label="Número de documento"><Input name="documentNumber" maxLength={20} className="h-10 bg-card" /></Field>
+                  <Field label="Nombres"><Input name="firstName" maxLength={30} className="h-10 bg-card" /></Field>
+                  <Field label="Apellidos"><Input name="lastName" maxLength={30} className="h-10 bg-card" /></Field>
                   <Field label="Teléfono principal">
                     <div className="flex gap-2">
-                      <select name="phonePrefix" aria-label="Código telefónico" className="h-10 rounded-lg border border-slate-200 bg-white px-2 text-sm">
+                      <select name="phonePrefix" aria-label="Código telefónico" className="h-10 rounded-lg border bg-card px-2 text-sm">
                         <option value="">Código</option>
                         {["0412", "0424", "0416", "0426", "0414"].map((prefix) => <option key={prefix}>{prefix}</option>)}
                       </select>
-                      <Input name="phoneNumber" inputMode="numeric" maxLength={7} className="h-10 border-slate-200 bg-white" />
+                      <Input name="phoneNumber" inputMode="numeric" maxLength={7} className="h-10 bg-card" />
                     </div>
                   </Field>
-                  <Field label="Teléfono secundario"><Input name="phone2" inputMode="tel" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Fecha de nacimiento"><Input type="date" name="birthDate" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Género"><Select name="gender" options={["Femenino", "Masculino", "Otro"]} /></Field>
-                  <Field label="Estado"><Select name="state" options={states} /></Field>
-                  <Field label="Municipio"><Input name="municipality" placeholder="Municipio" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Parroquia"><Input name="parish" placeholder="Parroquia" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Número de hijos"><Input type="number" min="0" name="children" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="¿Está embarazada?"><Select name="pregnant" options={["Sí", "No"]} /></Field>
-                  <Field label="Etnia"><Select name="ethnicity" options={["Negra", "Blanca", "Morena", "Indígena", "Afrodescendiente", "Otra"]} /></Field>
-                  <Field label="Estado civil"><Select name="maritalStatus" options={["Soltera", "Casada", "Divorciada", "Separada", "Concubina", "Ex concubina", "Viuda"]} /></Field>
-                  <Field label="Nivel de instrucción"><Select name="education" options={["Analfabeta", "Primaria completa", "Secundaria completa", "Técnico medio", "TSU", "Universitaria", "Postgrado", "Primaria incompleta", "Secundaria incompleta", "Ninguno"]} /></Field>
-                  <Field label="Ocupación"><Select name="occupation" options={["Desempleada", "Ama de casa", "Estudiante", "Área de salud", "Área administrativa", "Empresaria", "Comerciante", "Independiente", "Vendedora", "Artista", "Peluquera", "Costurera", "Jubilada", "Otra"]} /></Field>
+                  <Field label="Teléfono secundario"><Input name="phone2" inputMode="tel" className="h-10 bg-card" /></Field>
+                  <Field label="Fecha de nacimiento"><Input type="date" name="birthDate" className="h-10 bg-card" /></Field>
+                  <Field label="Género"><SelectForm name="gender" options={["Femenino", "Masculino", "Otro"]} /></Field>
+                  <Field label="Estado"><SelectForm name="state" options={states} /></Field>
+                  <Field label="Municipio"><Input name="municipality" placeholder="Municipio" className="h-10 bg-card" /></Field>
+                  <Field label="Parroquia"><Input name="parish" placeholder="Parroquia" className="h-10 bg-card" /></Field>
+                  <Field label="Número de hijos"><Input type="number" min="0" name="children" className="h-10 bg-card" /></Field>
+                  <Field label="¿Está embarazada?"><SelectForm name="pregnant" options={["Sí", "No"]} /></Field>
+                  <Field label="Etnia"><SelectForm name="ethnicity" options={["Negra", "Blanca", "Morena", "Indígena", "Afrodescendiente", "Otra"]} /></Field>
+                  <Field label="Estado civil"><SelectForm name="maritalStatus" options={["Soltera", "Casada", "Divorciada", "Separada", "Concubina", "Ex concubina", "Viuda"]} /></Field>
+                  <Field label="Nivel de instrucción"><SelectForm name="education" options={["Analfabeta", "Primaria completa", "Secundaria completa", "Técnico medio", "TSU", "Universitaria", "Postgrado", "Primaria incompleta", "Secundaria incompleta", "Ninguno"]} /></Field>
+                  <Field label="Ocupación"><SelectForm name="occupation" options={["Desempleada", "Ama de casa", "Estudiante", "Área de salud", "Área administrativa", "Empresaria", "Comerciante", "Independiente", "Vendedora", "Artista", "Peluquera", "Costurera", "Jubilada", "Otra"]} /></Field>
                   <Field label="Dirección" className="sm:col-span-2 lg:col-span-3">
-                    <textarea name="address" rows={3} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
+                    <textarea name="address" rows={3} className="w-full rounded-lg border bg-card px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
                   </Field>
                 </div>
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -368,7 +348,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                     <select
                       name="previousComplaint"
                       onChange={(event) => setPreviousComplaint(event.currentTarget.value === "Sí")}
-                      className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal text-slate-700 outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
+                      className="h-10 w-full rounded-lg border bg-card px-3 text-sm font-normal text-slate-700 outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
                     >
                       <option value="">Seleccionar</option>
                       <option>Sí</option>
@@ -376,7 +356,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                     </select>
                   </Field>
                   <Field label="Órgano receptor de la denuncia">
-                    <Input name="complaintAgency" maxLength={100} disabled={!previousComplaint} className="h-10 border-slate-200 bg-white disabled:bg-slate-100" />
+                    <Input name="complaintAgency" maxLength={100} disabled={!previousComplaint} className="h-10 bg-card disabled:bg-slate-100" />
                   </Field>
                 </div>
               </FormSection>
@@ -388,29 +368,29 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                 {familyCount > 0 && (
                   <div className="grid gap-4">
                     {Array.from({ length: familyCount }, (_, index) => (
-                      <div key={index} className="rounded-xl border border-slate-100 bg-slate-50/60 p-4">
+                      <div key={index} className="rounded-xl border bg-slate-50/60 p-4">
                         <h3 className="mb-4 text-sm font-semibold text-slate-700">Familiar {index + 1}</h3>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                           <Field label="Parentesco">
-                            <Select name={`family${index}Relationship`} options={["Hijo", "Hermano", "Tío", "Abuelo", "Primo", "Otro"]} />
+                            <SelectForm name={`family${index}Relationship`} options={["Hijo", "Hermano", "Tío", "Abuelo", "Primo", "Otro"]} />
                           </Field>
                           <Field label="Nombres">
-                            <Input name={`family${index}FirstName`} className="h-10 border-slate-200 bg-white" />
+                            <Input name={`family${index}FirstName`} className="h-10 bg-card" />
                           </Field>
                           <Field label="Apellidos">
-                            <Input name={`family${index}LastName`} className="h-10 border-slate-200 bg-white" />
+                            <Input name={`family${index}LastName`} className="h-10 bg-card" />
                           </Field>
                           <Field label="Fecha de nacimiento">
-                            <Input type="date" name={`family${index}BirthDate`} className="h-10 border-slate-200 bg-white" />
+                            <Input type="date" name={`family${index}BirthDate`} className="h-10 bg-card" />
                           </Field>
                           <Field label="Sexo">
-                            <Select name={`family${index}Gender`} options={["Femenino", "Masculino", "Otro"]} />
+                            <SelectForm name={`family${index}Gender`} options={["Femenino", "Masculino", "Otro"]} />
                           </Field>
                           <Field label="Teléfono">
-                            <Input name={`family${index}Phone`} inputMode="tel" className="h-10 border-slate-200 bg-white" />
+                            <Input name={`family${index}Phone`} inputMode="tel" className="h-10 bg-card" />
                           </Field>
                           <Field label="Teléfono secundario">
-                            <Input name={`family${index}Phone2`} inputMode="tel" className="h-10 border-slate-200 bg-white" />
+                            <Input name={`family${index}Phone2`} inputMode="tel" className="h-10 bg-card" />
                           </Field>
                         </div>
                       </div>
@@ -422,7 +402,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                     type="button"
                     variant="outline"
                     onClick={() => setFamilyCount((count) => count + 1)}
-                    className="mt-4 gap-2 rounded-xl border-slate-200 bg-white"
+                    className="mt-4 gap-2 rounded-xl bg-card"
                   >
                     <PlusCircleIcon size={17} />
                     Agregar familiar
@@ -436,7 +416,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   <div className="flex gap-5">
                     {[true, false].map((value) => (
                       <label key={String(value)} className="flex items-center gap-2 text-sm text-slate-600">
-                        <input type="radio" name="identifiedViolence" value={value ? "Sí" : "No"} checked={identifiedViolence === value} onChange={() => setIdentifiedViolence(value)} className="size-4 accent-[#315d91]" />
+                        <input type="radio" name="identifiedViolence" value={value ? "Sí" : "No"} checked={identifiedViolence === value} onChange={() => setIdentifiedViolence(value)} className="size-4 accent-sidebar-primary" />
                         {value ? "Sí" : "No"}
                       </label>
                     ))}
@@ -451,16 +431,16 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   <div className="flex gap-5">
                     {[true, false].map((value) => (
                       <label key={String(value)} className="flex items-center gap-2 text-sm text-slate-600">
-                        <input type="radio" name="aggressorReported" value={value ? "Sí" : "No"} checked={aggressorReported === value} onChange={() => setAggressorReported(value)} className="size-4 accent-[#315d91]" />
+                        <input type="radio" name="aggressorReported" value={value ? "Sí" : "No"} checked={aggressorReported === value} onChange={() => setAggressorReported(value)} className="size-4 accent-sidebar-primary" />
                         {value ? "Sí" : "No"}
                       </label>
                     ))}
                   </div>
                   {aggressorReported && (
                     <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                      <Field label="Nombres"><Input name="aggressorFirstName" className="h-10 border-slate-200 bg-white" /></Field>
-                      <Field label="Apellidos"><Input name="aggressorLastName" className="h-10 border-slate-200 bg-white" /></Field>
-                      <Field label="Vínculo"><Select name="aggressorRelationship" options={["Amigo", "Concubino", "Esposo", "Ex concubino", "Ex esposo", "Ex novio", "Novio", "Hermano", "Padre", "Hijo", "Primo", "Tío", "Vecino"]} /></Field>
+                      <Field label="Nombres"><Input name="aggressorFirstName" className="h-10 bg-card" /></Field>
+                      <Field label="Apellidos"><Input name="aggressorLastName" className="h-10 bg-card" /></Field>
+                      <Field label="Vínculo"><SelectForm name="aggressorRelationship" options={["Amigo", "Concubino", "Esposo", "Ex concubino", "Ex esposo", "Ex novio", "Novio", "Hermano", "Padre", "Hijo", "Primo", "Tío", "Vecino"]} /></Field>
                     </div>
                   )}
                 </fieldset>
@@ -468,15 +448,15 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
 
               <FormSection title="Intervención institucional">
                 <Field label="¿Ha recurrido a instituciones anteriormente?">
-                  <Select name="institutionalSupport" options={["Sí", "No"]} />
+                  <SelectForm name="institutionalSupport" options={["Sí", "No"]} />
                 </Field>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  <Field label="Organismo receptor"><Input name="institution" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Funcionario/a"><Input name="official" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Cargo"><Input name="officialRole" className="h-10 border-slate-200 bg-white" /></Field>
-                  <Field label="Respuesta"><Select name="institutionResponse" options={["Acudió en tiempo acordado", "Incumplió en tiempo acordado", "No acudió"]} /></Field>
+                  <Field label="Organismo receptor"><Input name="institution" className="h-10 bg-card" /></Field>
+                  <Field label="Funcionario/a"><Input name="official" className="h-10 bg-card" /></Field>
+                  <Field label="Cargo"><Input name="officialRole" className="h-10 bg-card" /></Field>
+                  <Field label="Respuesta"><SelectForm name="institutionResponse" options={["Acudió en tiempo acordado", "Incumplió en tiempo acordado", "No acudió"]} /></Field>
                   <Field label="Observaciones" className="sm:col-span-2">
-                    <textarea name="institutionNotes" rows={3} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
+                    <textarea name="institutionNotes" rows={3} className="w-full rounded-lg border bg-card px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
                   </Field>
                 </div>
               </FormSection>
@@ -486,14 +466,14 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
           {(callType === "Orientación" || callType === "Intervención") && (
             <FormSection title="Datos de contacto">
               <Field label="¿La persona desea ser contactada?">
-                <Select name="wantsContact" options={["Sí", "No"]} />
+                <SelectForm name="wantsContact" options={["Sí", "No"]} />
               </Field>
               <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Field label="Nombre de contacto"><Input name="contactName" className="h-10 border-slate-200 bg-white" /></Field>
-                <Field label="Apellido de contacto"><Input name="contactLastName" className="h-10 border-slate-200 bg-white" /></Field>
-                <Field label="Teléfono"><Input name="contactPhone" inputMode="tel" className="h-10 border-slate-200 bg-white" /></Field>
-                <Field label="Teléfono celular"><Input name="contactMobile" inputMode="tel" className="h-10 border-slate-200 bg-white" /></Field>
-                <Field label="Correo electrónico"><Input type="email" name="contactEmail" className="h-10 border-slate-200 bg-white" /></Field>
+                <Field label="Nombre de contacto"><Input name="contactName" className="h-10 bg-card" /></Field>
+                <Field label="Apellido de contacto"><Input name="contactLastName" className="h-10 bg-card" /></Field>
+                <Field label="Teléfono"><Input name="contactPhone" inputMode="tel" className="h-10 bg-card" /></Field>
+                <Field label="Teléfono celular"><Input name="contactMobile" inputMode="tel" className="h-10 bg-card" /></Field>
+                <Field label="Correo electrónico"><Input type="email" name="contactEmail" className="h-10 bg-card" /></Field>
               </div>
             </FormSection>
           )}
@@ -504,7 +484,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
               <div className="flex gap-5">
                 {[true, false].map((value) => (
                   <label key={String(value)} className="flex items-center gap-2 text-sm text-slate-600">
-                    <input type="radio" name="followUp" value={value ? "Sí" : "No"} checked={followUp === value} onChange={() => setFollowUp(value)} className="size-4 accent-[#315d91]" />
+                    <input type="radio" name="followUp" value={value ? "Sí" : "No"} checked={followUp === value} onChange={() => setFollowUp(value)} className="size-4 accent-sidebar-primary" />
                     {value ? "Sí" : "No"}
                   </label>
                 ))}
@@ -512,7 +492,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
               {followUp && (
                 <div className="mt-4 max-w-sm">
                   <Field label="Redirigir a">
-                    <select name="redirectTo" required className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-blue-400">
+                    <select name="redirectTo" required className="h-10 w-full rounded-lg border bg-card px-3 text-sm outline-none focus:border-blue-400">
                       <option value="">Seleccionar</option>
                       <option>Defensoría</option>
                       <option>Psiquiatría</option>
@@ -523,15 +503,15 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
               )}
             </fieldset>
             <Field label="Resumen de la atención" className="mt-5">
-              <textarea name="notes" rows={4} maxLength={1000} placeholder="Anota información relevante de la llamada..." className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
+              <textarea name="notes" rows={4} maxLength={1000} placeholder="Anota información relevante de la llamada..." className="w-full rounded-lg border bg-card px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100" />
             </Field>
           </FormSection>
 
           <div className="flex flex-wrap justify-end gap-3 pb-8">
-            <Button type="button" variant="outline" asChild className="h-11 rounded-xl border-slate-200 bg-white px-5">
+            <Button type="button" variant="outline" asChild className="h-11 rounded-xl bg-card px-5">
               <Link to="/0800/registros">Cancelar</Link>
             </Button>
-            <Button type="submit" className="h-11 gap-2 rounded-xl bg-[#172d55] px-5 text-white hover:bg-[#243f70]">
+            <Button type="submit" className="h-11 gap-2 rounded-xl bg-primary px-5 text-white hover:bg-[#243f70]">
               <FloppyDiskIcon size={18} />
               Guardar llamada
             </Button>

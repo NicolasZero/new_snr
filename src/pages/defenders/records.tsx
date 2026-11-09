@@ -19,12 +19,12 @@ function formatDate(value: string) {
   return Number.isNaN(date.getTime())
     ? value
     : new Intl.DateTimeFormat("es-VE", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date)
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date)
 }
 
 function recordSearchText(record: CallRecord) {
@@ -60,30 +60,30 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
   const pendingCount = records.length - attendedCount
 
   return (
-    <main className="min-h-svh bg-[#f7f8fc] text-slate-900">
+    <main className="min-h-svh ">
       <DefendersSectionHeader onLogout={onLogout} />
       <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
         <div className="mb-7">
-          <p className="text-sm font-medium text-[#315d91]">Módulo de defensoras</p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          <p className="text-sm font-medium text-sidebar-primary">Módulo de defensoras</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight  sm:text-3xl">
             Registros derivados a Defensoría
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-muted-foreground">
             Consulta los casos remitidos desde el 0800 y registra su atención.
           </p>
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
           <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Casos derivados</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{records.length}</p>
+            <p className="text-sm text-muted-foreground">Casos derivados</p>
+            <p className="mt-2 text-2xl font-semibold ">{records.length}</p>
           </article>
           <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Pendientes de atención</p>
+            <p className="text-sm text-muted-foreground">Pendientes de atención</p>
             <p className="mt-2 text-2xl font-semibold text-amber-700">{pendingCount}</p>
           </article>
           <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Atendidos por Defensoría</p>
+            <p className="text-sm text-muted-foreground">Atendidos por Defensoría</p>
             <p className="mt-2 text-2xl font-semibold text-emerald-700">{attendedCount}</p>
           </article>
         </div>
@@ -109,7 +109,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-212.5 text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <thead className="bg-slate-50 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 <tr>
                   <th className="px-5 py-3">Código / Fecha</th>
                   <th className="px-5 py-3">Tipo de llamada</th>
@@ -127,36 +127,36 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
                     <tr key={record.id} className="transition hover:bg-slate-50/70">
                       <td className="px-5 py-4">
                         <p className="font-semibold text-slate-800">{record.id}</p>
-                        <p className="mt-1 text-xs text-slate-500">{formatDate(record.createdAt)}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{formatDate(record.createdAt)}</p>
                       </td>
                       <td className="px-5 py-4">
-                        <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-[#315d91]">
+                        <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-sidebar-primary">
                           {record.type}
                         </span>
-                        <p className="mt-2 max-w-56 truncate text-xs text-slate-500" title={record.subtypes.join(", ")}>
+                        <p className="mt-2 max-w-56 truncate text-xs text-muted-foreground" title={record.subtypes.join(", ")}>
                           {record.subtypes.join(", ") || "Sin subtipo"}
                         </p>
                       </td>
                       <td className="px-5 py-4">
                         <p className="font-medium text-slate-700">{record.victimName}</p>
-                        <p className="mt-1 text-xs text-slate-500">{record.phone}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">{record.phone}</p>
                       </td>
                       <td className="px-5 py-4">
                         <p className="font-medium text-slate-700">{record.state}</p>
                       </td>
                       <td className="px-5 py-4">
-                        <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${record.followUp ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-500"}`}>
+                        <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${record.followUp ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-muted-foreground"}`}>
                           {record.followUp ? "Requiere seguimiento" : "Sin seguimiento"}
                         </span>
                       </td>
                       <td className="px-5 py-4">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${attended ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${attended ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-muted-foreground"}`}>
                           {attended && <CheckCircleIcon size={14} weight="fill" aria-hidden="true" />}
                           {attended ? "Sí" : "No"}
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <Button asChild size="sm" className="gap-1.5 rounded-lg bg-[#172d55] text-white hover:bg-[#243f70]">
+                        <Button asChild size="sm" className="gap-1.5 rounded-lg bg-primary text-white hover:bg-[#243f70]">
                           <Link to={`/defensoras/registros/${encodeURIComponent(record.id)}`}>
                             <HeadsetIcon size={16} />
                             {attended ? "Ver atención" : "Atender"}
@@ -174,7 +174,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
                           ? "No hay registros derivados a Defensoría"
                           : "No se encontraron registros"}
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {records.length === 0
                           ? "Los casos remitidos desde el 0800 aparecerán aquí."
                           : "Prueba con otros términos de búsqueda."}
@@ -185,7 +185,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
               </tbody>
             </table>
           </div>
-          <div className="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+          <div className="border-t border-slate-100 px-5 py-3 text-xs text-muted-foreground">
             Mostrando {filteredRecords.length} de {records.length} registros · Datos de prueba almacenados en este navegador
           </div>
         </section>

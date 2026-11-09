@@ -11,6 +11,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getCallRecords, type CallRecord, type CallType } from "@/lib/calls0800"
 import { SectionHeader } from "@/pages/0800/section-header"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
 
 interface CallRecordsPageProps {
   onLogout: () => void
@@ -95,20 +104,20 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
   }
 
   return (
-    <main className="min-h-svh bg-[#f7f8fc] text-slate-900">
+    <main className="min-h-svh ">
       <SectionHeader onLogout={onLogout} />
       <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-[#315d91]">Módulo de atención 0800</p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+            <p className="text-sm font-medium text-sidebar-primary">Módulo de atención 0800</p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight  sm:text-3xl">
               Registros de llamadas
             </h1>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               Consulta y filtra las llamadas recibidas por las operadoras.
             </p>
           </div>
-          <Button asChild className="h-10 gap-2 rounded-xl bg-[#172d55] px-4 text-white hover:bg-[#243f70]">
+          <Button asChild className="h-10 gap-2 rounded-xl px-4 text-white">
             <Link to="/0800/registrar">
               <PlusIcon size={18} />
               Registrar llamada
@@ -117,45 +126,48 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Llamadas registradas</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{records.length}</p>
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
+            <p className="text-sm text-muted-foreground">Llamadas registradas</p>
+            <p className="mt-2 text-2xl font-semibold ">{records.length}</p>
           </article>
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Recibidas hoy</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{todayCount}</p>
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
+            <p className="text-sm text-muted-foreground">Recibidas hoy</p>
+            <p className="mt-2 text-2xl font-semibold ">{todayCount}</p>
           </article>
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Requieren seguimiento</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{followUpCount}</p>
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
+            <p className="text-sm text-muted-foreground">Requieren seguimiento</p>
+            <p className="mt-2 text-2xl font-semibold ">{followUpCount}</p>
           </article>
         </div>
 
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div className="flex flex-1 flex-col gap-3 sm:flex-row">
               <label className="relative block flex-1">
-                <MagnifyingGlassIcon size={18} className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+                <MagnifyingGlassIcon size={18} className="absolute top-1/2 left-3 -translate-y-1/2" aria-hidden="true" />
                 <Input
                   type="search"
                   value={query}
                   onChange={(event) => setQuery(event.currentTarget.value)}
                   placeholder="Buscar por código, persona, teléfono..."
                   aria-label="Buscar llamadas"
-                  className="h-10 border-slate-200 bg-white pl-9"
+                  className="h-10 bg-card pl-9"
                 />
               </label>
-              <select
-                value={selectedType}
-                onChange={(event) => setSelectedType(event.currentTarget.value)}
-                aria-label="Filtrar por tipo de llamada"
-                className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600 outline-none focus:border-blue-400"
-              >
-                <option value="">Todos los tipos</option>
-                {types.map((type) => <option key={type}>{type}</option>)}
-              </select>
+              <Select onValueChange={(value) => setSelectedType(value)}>
+                <SelectTrigger className="w-45 h-10!">
+                  <SelectValue placeholder="Filtrar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="">Todos</SelectItem>
+                    {types.map((type) => <SelectItem key={type} value={type}>{type}</SelectItem>)}
+
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
-            <Button type="button" variant="outline" onClick={exportCsv} className="h-10 gap-2 rounded-xl border-slate-200 bg-white">
+            <Button type="button" variant="outline" onClick={exportCsv} className="h-10 gap-2 rounded-xl bg-card">
               <ArrowDownIcon size={17} />
               Exportar CSV
             </Button>
@@ -163,7 +175,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-212.5 text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <thead className="bg-primary/10 text-xs font-semibold tracking-wide text-foreground uppercase">
                 <tr>
                   <th className="px-5 py-3">Código / Fecha</th>
                   <th className="px-5 py-3">Tipo de llamada</th>
@@ -173,29 +185,35 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                   <th className="px-5 py-3"><span className="sr-only">Acciones</span></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-primary-foreground">
                 {filteredRecords.map((record) => (
-                  <tr key={record.id} className="transition hover:bg-slate-50/70">
+                  <tr key={record.id} className="transition hover:bg-background">
+                    {/* codigo y fecha */}
                     <td className="px-5 py-4">
-                      <p className="font-semibold text-slate-800">{record.id}</p>
-                      <p className="mt-1 text-xs text-slate-500">{formatDate(record.createdAt)}</p>
+                      <p className="text-secondary-foreground font-semibold">{record.id}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{formatDate(record.createdAt)}</p>
                     </td>
+                    {/* tipo de llamada */}
                     <td className="px-5 py-4">
-                      <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-[#315d91]">{record.type}</span>
-                      <p className="mt-2 max-w-56 truncate text-xs text-slate-500" title={record.subtypes.join(", ")}>
+                      <Badge>{record.type}</Badge>
+                      <p className="mt-2 max-w-56 truncate text-xs text-muted-foreground" title={record.subtypes.join(", ")}>
                         {record.subtypes.join(", ") || "Sin subtipo"}
                       </p>
                     </td>
+                    {/* persona y telefono */}
                     <td className="px-5 py-4">
-                      <p className="font-medium text-slate-700">{record.victimName}</p>
-                      <p className="mt-1 text-xs text-slate-500">{record.phone}</p>
+                      <p className="font-medium text-primary">{record.victimName}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{record.phone}</p>
                     </td>
-                    <td className="px-5 py-4 text-slate-600">{record.state}</td>
+                    {/* estado */}
+                    <td className="px-5 py-4 text-primary">{record.state}</td>
+                    {/* seguimiento */}
                     <td className="px-5 py-4">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${record.followUp ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-500"}`}>
+                      <Badge className="h-6" variant={record.followUp ? "warning" : "success"}>
                         {record.followUp ? "Pendiente" : "No requiere"}
-                      </span>
+                      </Badge>
                     </td>
+                    {/* acciones */}
                     <td className="px-5 py-4 text-right">
                       <Button type="button" variant="outline" size="sm" onClick={() => setSelectedRecord(record)} className="gap-1.5 rounded-lg border-slate-200">
                         <EyeIcon size={16} />
@@ -208,14 +226,14 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                   <tr>
                     <td colSpan={6} className="px-5 py-14 text-center">
                       <p className="font-medium text-slate-700">No se encontraron llamadas</p>
-                      <p className="mt-1 text-sm text-slate-500">Prueba con otros términos o cambia el filtro.</p>
+                      <p className="mt-1 text-sm text-muted-foreground">Prueba con otros términos o cambia el filtro.</p>
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
-          <div className="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+          <div className="border-t px-5 py-3 text-xs text-muted-foreground">
             Mostrando {filteredRecords.length} de {records.length} llamadas · Datos de prueba almacenados en este navegador
           </div>
         </section>
@@ -224,12 +242,12 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4" role="presentation" onMouseDown={(event) => {
             if (event.target === event.currentTarget) setSelectedRecord(null)
           }}>
-            <section role="dialog" aria-modal="true" aria-labelledby="record-detail-title" className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
-              <div className="flex items-start justify-between border-b border-slate-100 p-5 sm:p-6">
+            <section role="dialog" aria-modal="true" aria-labelledby="record-detail-title" className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-card shadow-2xl">
+              <div className="flex items-start justify-between border-b p-5 sm:p-6">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-[#315d91]">Detalle de llamada</p>
-                  <h2 id="record-detail-title" className="mt-1 text-xl font-semibold text-slate-900">{selectedRecord.id}</h2>
-                  <p className="mt-1 text-sm text-slate-500">{formatDate(selectedRecord.createdAt)}</p>
+                  <p className="text-xs font-medium uppercase tracking-wide text-sidebar-primary">Detalle de llamada</p>
+                  <h2 id="record-detail-title" className="mt-1 text-xl font-semibold ">{selectedRecord.id}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{formatDate(selectedRecord.createdAt)}</p>
                 </div>
                 <Button type="button" variant="ghost" size="icon" aria-label="Cerrar detalle" onClick={() => setSelectedRecord(null)}>
                   <XIcon size={20} />
@@ -249,7 +267,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                   <Detail key={key} label={key} value={Array.isArray(value) ? value.join(", ") : value} />
                 ))}
               </div>
-              <div className="border-t border-slate-100 p-5 text-right sm:px-6">
+              <div className="border-t p-5 text-right sm:px-6">
                 <Button type="button" variant="outline" onClick={() => setSelectedRecord(null)}>Cerrar</Button>
               </div>
             </section>
@@ -263,7 +281,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
 function Detail({ label, value, className = "" }: { label: string; value: string; className?: string }) {
   return (
     <div className={className}>
-      <p className="text-xs font-medium text-slate-500">{label}</p>
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
       <p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{value}</p>
     </div>
   )

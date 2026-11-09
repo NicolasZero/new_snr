@@ -26,18 +26,18 @@ function formatDate(value: string) {
   return Number.isNaN(date.getTime())
     ? value
     : new Intl.DateTimeFormat("es-VE", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date)
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date)
 }
 
 function Detail({ label, value, className = "" }: { label: string; value: string; className?: string }) {
   return (
     <div className={className}>
-      <p className="text-xs font-medium text-slate-500">{label}</p>
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
       <p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{value}</p>
     </div>
   )
@@ -85,11 +85,11 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
     }
 
     const attention: DefenderAttention = {
-        summary,
-        needsFollowUp: needsFollowUpValue,
-        followUpService: service,
-        attendedAt: new Date().toISOString(),
-      }
+      summary,
+      needsFollowUp: needsFollowUpValue,
+      followUpService: service,
+      attendedAt: new Date().toISOString(),
+    }
 
     try {
       saveDefenderAttention(record.id, attention)
@@ -102,7 +102,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
   }
 
   return (
-    <main className="min-h-svh bg-[#f7f8fc] text-slate-900">
+    <main className="min-h-svh">
       <DefendersSectionHeader onLogout={onLogout} />
       <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-10">
         <Button asChild type="button" variant="ghost" className="mb-5 -ml-3 gap-2 text-slate-600">
@@ -114,27 +114,27 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
 
         {!record || record.redirectTo !== "Defensoría" ? (
           <section className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <h1 className="text-xl font-semibold text-slate-900">Registro no disponible</h1>
-            <p className="mt-2 text-sm text-slate-500">
+            <h1 className="text-xl font-semibold">Registro no disponible</h1>
+            <p className="mt-2 text-sm text-muted-foreground">
               No se encontró el registro o no fue derivado a Defensoría.
             </p>
-            <Button asChild className="mt-5 rounded-xl bg-[#172d55] text-white hover:bg-[#243f70]">
+            <Button asChild className="mt-5 rounded-xl bg-primary text-white hover:bg-[#243f70]">
               <Link to="/defensoras/registros">Ir a los registros</Link>
             </Button>
           </section>
         ) : (
           <>
             <div className="mb-6">
-              <p className="text-sm font-medium text-[#315d91]">Atención de Defensoría</p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+              <p className="text-sm font-medium text-sidebar-primary">Atención de Defensoría</p>
+              <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
                 Registro {record.id}
               </h1>
-              <p className="mt-2 text-sm text-slate-500">{formatDate(record.createdAt)}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{formatDate(record.createdAt)}</p>
             </div>
 
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
-                <h2 className="font-semibold text-slate-900">Datos del registro 0800</h2>
+                <h2 className="font-semibold">Datos del registro 0800</h2>
               </div>
               <div className="grid gap-x-6 gap-y-5 p-5 sm:grid-cols-2 sm:p-6">
                 {recordDetails(record).map((detail) => (
@@ -145,8 +145,8 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
 
             <section className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
-                <h2 className="font-semibold text-slate-900">Atención de Defensoría</h2>
-                <p className="mt-1 text-sm text-slate-500">
+                <h2 className="font-semibold">Atención de Defensoría</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
                   Registra el resumen de atención y si el caso necesita seguimiento.
                 </p>
               </div>
@@ -238,7 +238,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                     <Button asChild type="button" variant="outline" className="rounded-xl">
                       <Link to="/defensoras/registros">Cancelar</Link>
                     </Button>
-                    <Button type="submit" className="gap-2 rounded-xl bg-[#172d55] text-white hover:bg-[#243f70]">
+                    <Button type="submit" className="gap-2 rounded-xl bg-primary text-white hover:bg-[#243f70]">
                       <FloppyDiskIcon size={17} />
                       Guardar atención
                     </Button>
