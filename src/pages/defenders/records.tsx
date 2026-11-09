@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getCallRecords, type CallRecord } from "@/lib/calls0800"
 import { DefendersSectionHeader } from "@/pages/defenders/section-header"
+import { Badge } from "@/components/ui/badge"
 
 interface DefenderRecordsPageProps {
   onLogout: () => void
@@ -62,7 +63,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
   return (
     <main className="min-h-svh ">
       <DefendersSectionHeader onLogout={onLogout} />
-      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
+      <div className="mx-auto max-w-7xl px-5 py-8">
         <div className="mb-7">
           <p className="text-sm font-medium text-sidebar-primary">Módulo de defensoras</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight  sm:text-3xl">
@@ -74,26 +75,26 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
             <p className="text-sm text-muted-foreground">Casos derivados</p>
             <p className="mt-2 text-2xl font-semibold ">{records.length}</p>
           </article>
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
             <p className="text-sm text-muted-foreground">Pendientes de atención</p>
             <p className="mt-2 text-2xl font-semibold text-amber-700">{pendingCount}</p>
           </article>
-          <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-sm text-muted-foreground">Atendidos por Defensoría</p>
+          <article className="rounded-2xl border bg-card p-4 shadow-sm">
+            <p className="text-sm text-muted-foreground">Atendidos</p>
             <p className="mt-2 text-2xl font-semibold text-emerald-700">{attendedCount}</p>
           </article>
         </div>
 
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-100 p-4 sm:p-5">
+        <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="border-b p-4 sm:p-5">
             <label className="relative block max-w-xl">
               <MagnifyingGlassIcon
                 size={18}
-                className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
+                className="absolute top-1/2 left-3 -translate-y-1/2"
                 aria-hidden="true"
               />
               <Input
@@ -102,61 +103,66 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
                 onChange={(event) => setQuery(event.currentTarget.value)}
                 placeholder="Buscar por código, persona, teléfono..."
                 aria-label="Buscar registros derivados"
-                className="h-10 border-slate-200 bg-white pl-9"
+                className="h-10 bg-card pl-9"
               />
             </label>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full min-w-212.5 text-left text-sm">
-              <thead className="bg-slate-50 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+              <thead className="bg-primary/10 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 <tr>
                   <th className="px-5 py-3">Código / Fecha</th>
                   <th className="px-5 py-3">Tipo de llamada</th>
                   <th className="px-5 py-3">Persona / Teléfono</th>
                   <th className="px-5 py-3">Estado</th>
                   <th className="px-5 py-3">Seguimiento</th>
-                  <th className="px-5 py-3">Atendida por Defensoría</th>
+                  <th className="px-5 py-3">Atendida</th>
                   <th className="px-5 py-3"><span className="sr-only">Acciones</span></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-primary-foreground">
                 {filteredRecords.map((record) => {
                   const attended = Boolean(record.defenderAttention)
                   return (
-                    <tr key={record.id} className="transition hover:bg-slate-50/70">
+                    <tr key={record.id} className="transition hover:bg-background">
+                      {/* codigo y fecha */}
                       <td className="px-5 py-4">
-                        <p className="font-semibold text-slate-800">{record.id}</p>
+                        <p className="font-semibold text-secondary-foreground">{record.id}</p>
                         <p className="mt-1 text-xs text-muted-foreground">{formatDate(record.createdAt)}</p>
                       </td>
+                      {/* tipo de llamada */}
                       <td className="px-5 py-4">
-                        <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-sidebar-primary">
-                          {record.type}
-                        </span>
+                        <Badge variant="secondary">{record.type}</Badge>
                         <p className="mt-2 max-w-56 truncate text-xs text-muted-foreground" title={record.subtypes.join(", ")}>
                           {record.subtypes.join(", ") || "Sin subtipo"}
                         </p>
                       </td>
+                      {/* persona y telefono */}
                       <td className="px-5 py-4">
-                        <p className="font-medium text-slate-700">{record.victimName}</p>
+                        <p className="font-medium text-sidebar-primary">{record.victimName}</p>
                         <p className="mt-1 text-xs text-muted-foreground">{record.phone}</p>
                       </td>
+                      {/* estado */}
                       <td className="px-5 py-4">
-                        <p className="font-medium text-slate-700">{record.state}</p>
+                        <p className="font-medium text-sidebar-primary">{record.state}</p>
                       </td>
+                      {/* seguimiento */}
                       <td className="px-5 py-4">
-                        <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${record.followUp ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-muted-foreground"}`}>
-                          {record.followUp ? "Requiere seguimiento" : "Sin seguimiento"}
-                        </span>
+                        <Badge className="h-6" variant={record.followUp ? "warning" : "success"}>
+                          {record.followUp ? "Pendiente" : "No requiere"}
+                        </Badge>
                       </td>
+                      {/* atendido por defensoría */}
                       <td className="px-5 py-4">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${attended ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-muted-foreground"}`}>
+                        <Badge variant={attended ? "secondary" : "destructive"} >
                           {attended && <CheckCircleIcon size={14} weight="fill" aria-hidden="true" />}
                           {attended ? "Sí" : "No"}
-                        </span>
+                        </Badge>
                       </td>
+                      {/* acciones */}
                       <td className="px-5 py-4 text-right">
-                        <Button asChild size="sm" className="gap-1.5 rounded-lg bg-primary text-white hover:bg-[#243f70]">
+                        <Button asChild variant="outline" size="sm" className="gap-1.5 rounded-lg">
                           <Link to={`/defensoras/registros/${encodeURIComponent(record.id)}`}>
                             <HeadsetIcon size={16} />
                             {attended ? "Ver atención" : "Atender"}
@@ -169,7 +175,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
                 {filteredRecords.length === 0 && (
                   <tr>
                     <td colSpan={7} className="px-5 py-14 text-center">
-                      <p className="font-medium text-slate-700">
+                      <p className="font-medium">
                         {records.length === 0
                           ? "No hay registros derivados a Defensoría"
                           : "No se encontraron registros"}
@@ -185,7 +191,7 @@ export function DefenderRecordsPage({ onLogout }: DefenderRecordsPageProps) {
               </tbody>
             </table>
           </div>
-          <div className="border-t border-slate-100 px-5 py-3 text-xs text-muted-foreground">
+          <div className="border-t px-5 py-3 text-xs text-muted-foreground">
             Mostrando {filteredRecords.length} de {records.length} registros · Datos de prueba almacenados en este navegador
           </div>
         </section>

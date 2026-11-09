@@ -167,7 +167,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                 </SelectContent>
               </Select>
             </div>
-            <Button type="button" variant="outline" onClick={exportCsv} className="h-10 gap-2 rounded-xl bg-card">
+            <Button type="button" onClick={exportCsv} className="h-10 gap-2 rounded-xl">
               <ArrowDownIcon size={17} />
               Exportar CSV
             </Button>
@@ -185,7 +185,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                   <th className="px-5 py-3"><span className="sr-only">Acciones</span></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-primary-foreground">
+              <tbody className="divide-y divide-muted">
                 {filteredRecords.map((record) => (
                   <tr key={record.id} className="transition hover:bg-background">
                     {/* codigo y fecha */}
@@ -195,18 +195,18 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                     </td>
                     {/* tipo de llamada */}
                     <td className="px-5 py-4">
-                      <Badge>{record.type}</Badge>
+                      <Badge variant="secondary">{record.type}</Badge>
                       <p className="mt-2 max-w-56 truncate text-xs text-muted-foreground" title={record.subtypes.join(", ")}>
                         {record.subtypes.join(", ") || "Sin subtipo"}
                       </p>
                     </td>
                     {/* persona y telefono */}
                     <td className="px-5 py-4">
-                      <p className="font-medium text-primary">{record.victimName}</p>
+                      <p className="font-medium text-sidebar-primary">{record.victimName}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{record.phone}</p>
                     </td>
                     {/* estado */}
-                    <td className="px-5 py-4 text-primary">{record.state}</td>
+                    <td className="px-5 py-4 text-sidebar-primary">{record.state}</td>
                     {/* seguimiento */}
                     <td className="px-5 py-4">
                       <Badge className="h-6" variant={record.followUp ? "warning" : "success"}>
@@ -215,7 +215,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                     </td>
                     {/* acciones */}
                     <td className="px-5 py-4 text-right">
-                      <Button type="button" variant="outline" size="sm" onClick={() => setSelectedRecord(record)} className="gap-1.5 rounded-lg border-slate-200">
+                      <Button type="button" variant="outline" size="sm" onClick={() => setSelectedRecord(record)} className="gap-1.5 rounded-lg">
                         <EyeIcon size={16} />
                         Ver
                       </Button>
@@ -225,7 +225,7 @@ export function CallRecordsPage({ onLogout }: CallRecordsPageProps) {
                 {filteredRecords.length === 0 && (
                   <tr>
                     <td colSpan={6} className="px-5 py-14 text-center">
-                      <p className="font-medium text-slate-700">No se encontraron llamadas</p>
+                      <p className="font-medium">No se encontraron llamadas</p>
                       <p className="mt-1 text-sm text-muted-foreground">Prueba con otros términos o cambia el filtro.</p>
                     </td>
                   </tr>
@@ -282,7 +282,7 @@ function Detail({ label, value, className = "" }: { label: string; value: string
   return (
     <div className={className}>
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
-      <p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{value}</p>
+      <p className="mt-1 whitespace-pre-wrap text-sm">{value}</p>
     </div>
   )
 }

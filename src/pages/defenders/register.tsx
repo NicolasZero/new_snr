@@ -38,7 +38,7 @@ function Detail({ label, value, className = "" }: { label: string; value: string
   return (
     <div className={className}>
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
-      <p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{value}</p>
+      <p className="mt-1 whitespace-pre-wrap text-sm text-sidebar-primary">{value}</p>
     </div>
   )
 }
@@ -104,8 +104,8 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
   return (
     <main className="min-h-svh">
       <DefendersSectionHeader onLogout={onLogout} />
-      <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8 sm:py-10">
-        <Button asChild type="button" variant="ghost" className="mb-5 -ml-3 gap-2 text-slate-600">
+      <div className="mx-auto max-w-5xl px-5 py-8">
+        <Button asChild type="button" variant="ghost" className="mb-5 -ml-3 gap-2 text-muted-foreground hover:text-primary">
           <Link to="/defensoras/registros">
             <ArrowLeftIcon size={17} />
             Volver a registros
@@ -113,12 +113,12 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
         </Button>
 
         {!record || record.redirectTo !== "Defensoría" ? (
-          <section className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <section className="rounded-2xl border bg-card p-8 text-center shadow-sm">
             <h1 className="text-xl font-semibold">Registro no disponible</h1>
             <p className="mt-2 text-sm text-muted-foreground">
               No se encontró el registro o no fue derivado a Defensoría.
             </p>
-            <Button asChild className="mt-5 rounded-xl bg-primary text-white hover:bg-[#243f70]">
+            <Button asChild className="mt-5 rounded-xl">
               <Link to="/defensoras/registros">Ir a los registros</Link>
             </Button>
           </section>
@@ -132,8 +132,8 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
               <p className="mt-2 text-sm text-muted-foreground">{formatDate(record.createdAt)}</p>
             </div>
 
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
+            <section className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+              <div className="border-b px-5 py-4 sm:px-6">
                 <h2 className="font-semibold">Datos del registro 0800</h2>
               </div>
               <div className="grid gap-x-6 gap-y-5 p-5 sm:grid-cols-2 sm:p-6">
@@ -143,8 +143,8 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
               </div>
             </section>
 
-            <section className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
+            <section className="mt-5 overflow-hidden rounded-2xl border bg-card shadow-sm">
+              <div className="border-b px-5 py-4 sm:px-6">
                 <h2 className="font-semibold">Atención de Defensoría</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Registra el resumen de atención y si el caso necesita seguimiento.
@@ -181,7 +181,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="grid gap-5 p-5 sm:p-6">
-                  <label className="grid gap-1.5 text-sm font-medium text-slate-700">
+                  <label className="grid gap-1.5 text-sm font-medium">
                     Resumen de la atención
                     <textarea
                       name="summary"
@@ -189,11 +189,11 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                       required
                       maxLength={2000}
                       placeholder="Describe brevemente la atención brindada..."
-                      className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
+                      className="w-full rounded-lg border bg-card px-3 py-2 text-sm font-normal outline-none"
                     />
                   </label>
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <label className="grid gap-1.5 text-sm font-medium text-slate-700">
+                    <label className="grid gap-1.5 text-sm font-medium">
                       El caso necesita seguimiento
                       <select
                         value={needsFollowUp}
@@ -202,7 +202,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                           if (event.currentTarget.value !== "Sí") setFollowUpService("")
                         }}
                         required
-                        className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
+                        className="h-10 w-full rounded-lg border bg-card px-3 text-sm font-normal outline-none"
                       >
                         <option value="">Seleccionar</option>
                         <option value="Sí">Sí</option>
@@ -210,7 +210,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                       </select>
                     </label>
                     {needsFollowUp === "Sí" && (
-                      <label className="grid gap-1.5 text-sm font-medium text-slate-700">
+                      <label className="grid gap-1.5 text-sm font-medium">
                         Tipo de seguimiento
                         <select
                           value={followUpService}
@@ -221,7 +221,7 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                             setFollowUpService(selectedService ?? "")
                           }}
                           required
-                          className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal outline-none focus:border-blue-400 focus:ring-3 focus:ring-blue-100"
+                          className="h-10 w-full rounded-lg border bg-card px-3 text-sm font-normal outline-none"
                         >
                           <option value="">Seleccionar</option>
                           {followUpServices.map((service) => (
@@ -234,11 +234,11 @@ export function DefenderRegisterPage({ onLogout }: DefenderRegisterPageProps) {
                   {saveError && (
                     <p role="alert" className="text-sm text-red-700">{saveError}</p>
                   )}
-                  <div className="flex flex-wrap justify-end gap-3 border-t border-slate-100 pt-5">
+                  <div className="flex flex-wrap justify-end gap-3 border-t pt-5">
                     <Button asChild type="button" variant="outline" className="rounded-xl">
                       <Link to="/defensoras/registros">Cancelar</Link>
                     </Button>
-                    <Button type="submit" className="gap-2 rounded-xl bg-primary text-white hover:bg-[#243f70]">
+                    <Button type="submit" className="gap-2 rounded-xl">
                       <FloppyDiskIcon size={17} />
                       Guardar atención
                     </Button>

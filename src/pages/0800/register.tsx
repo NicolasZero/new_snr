@@ -16,7 +16,7 @@ import {
 } from "@/lib/calls0800"
 import { SectionHeader } from "@/pages/0800/section-header"
 import { CheckOptions } from "@/components/checkOptions"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface RegisterCallPageProps {
   onLogout: () => void
@@ -147,7 +147,7 @@ function FormSection({
   return (
     <section className="rounded-2xl border bg-card p-5 shadow-sm sm:p-7">
       <div className="mb-5 border-b border-muted pb-4">
-        <h2 className="font-semibold ">{title}</h2>
+        <h2 className="font-semibold text-sidebar-primary">{title}</h2>
         {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
       </div>
       {children}
@@ -247,6 +247,8 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
           <ArrowLeftIcon size={16} aria-hidden="true" />
           Volver a registros
         </Link>
+
+        {/* Mensajes de error y éxito */}
         {savedId && (
           <div role="status" className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/10 px-4 py-3 text-sm text-emerald-800">
             <span className="flex items-center gap-2">
@@ -258,13 +260,14 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
             </Button>
           </div>
         )}
+
         {saveError && (
           <div role="alert" className="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
             {saveError}
           </div>
         )}
 
-        <div className="mb-7 flex items-start gap-4">
+        <section className="mb-7 flex items-start gap-4">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-sidebar-primary/10 text-sidebar-primary">
             <ClipboardTextIcon size={25} weight="duotone" />
           </span>
@@ -275,7 +278,9 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
               Completa la información de la atención recibida. Los campos con * son obligatorios.
             </p>
           </div>
-        </div>
+        </section>
+
+        {/*  */}
         <p className="mb-5 rounded-xl border bg-blue-50 dark:border-blue-800 dark:bg-blue-900/10 px-4 py-3 text-sm text-blue-900 dark:text-blue-50">
           Versión de prueba: la información se guarda localmente en este navegador y no se envía a una API.
         </p>
@@ -293,6 +298,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                 />
               </Field>
             </div>
+
             <fieldset className="mt-6">
               <legend className="mb-2 text-sm font-medium">Tipo de llamada *</legend>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -304,6 +310,7 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                 ))}
               </div>
             </fieldset>
+
             <fieldset className="mt-6">
               <legend className="mb-2 text-sm font-medium">Subtipo(s) de llamada</legend>
               <CheckOptions name="subtypes" options={subtypeOptions[callType]} />
@@ -320,11 +327,26 @@ export function RegisterCallPage({ onLogout }: RegisterCallPageProps) {
                   <Field label="Apellidos"><Input name="lastName" maxLength={30} className="h-10 bg-card" /></Field>
                   <Field label="Teléfono principal">
                     <div className="flex gap-2">
-                      <select name="phonePrefix" aria-label="Código telefónico" className="h-10 rounded-lg border bg-card px-2 text-sm">
-                        <option value="">Código</option>
-                        {["0412", "0424", "0416", "0426", "0414"].map((prefix) => <option key={prefix}>{prefix}</option>)}
-                      </select>
-                      <Input name="phoneNumber" inputMode="numeric" maxLength={7} className="h-10 bg-card" />
+                      <Select>
+                        <SelectTrigger className="w-fit h-full!">
+                          <SelectValue placeholder="Código" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Movistar</SelectLabel>
+                            <SelectItem value="0414">0414</SelectItem>
+                            <SelectItem value="0424">0424</SelectItem>
+                            <SelectLabel>Movilnet</SelectLabel>
+                            <SelectItem value="0416">0416</SelectItem>
+                            <SelectItem value="0426">0426</SelectItem>
+                            <SelectLabel>Digitel</SelectLabel>
+                            <SelectItem value="0412">0412</SelectItem>
+                            <SelectItem value="0422">0422</SelectItem>
+
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Input type="number" name="phoneNumber" inputMode="numeric" min={0} maxLength={7} className="h-10 bg-card" />
                     </div>
                   </Field>
                   <Field label="Teléfono secundario"><Input name="phone2" inputMode="tel" className="h-10 bg-card" /></Field>
